@@ -81,18 +81,6 @@ class Coil:
 
         plt.show()
 
-"""
-thetas = np.linspace(0,2*np.pi,100)
-X = 1*np.cos(thetas)
-Y = 1*np.sin(thetas)
-Z = 0*X
-XYZ = np.vstack((X,Y,Z)).T
-
-a = Coil(XYZ,1)
-field = a.B(np.array([[0,0,0],[0,1,2]]))
-print(field)
-"""
-
 class Tokamak:
     def __init__(self,R,a,coils=[]):
         """

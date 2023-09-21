@@ -58,7 +58,6 @@ class Coil:
         """
         _r = xyz_samples - xyz_center[None,:]
         return 1e-7 * self.I * np.cross(uvw,_r)/np.linalg.norm(_r,axis=1)[:,None]**3 #mu_0/4pi = 1e-7 H/m
-            
     def plot(self):
         """
         Displays a 3D plot of the coil

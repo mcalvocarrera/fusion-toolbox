@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Coil:
-    def __init__(self,pts,I,closed=True):
+    def __init__(self,pts,I):
         """
         Coil Class.
 
@@ -14,7 +14,7 @@ class Coil:
         I : float
             Coil current, in Amps
         """
-        if not np.allclose(pts[0],pts[-1]): #Given loop is not properly closed, repeat first pt
+        if not np.allclose(pts[0],pts[-1]): #If loop is not properly closed, connect first/last pts
             pts = np.append(pts,pts[0][None,:],axis=0)
         self.pts = pts
         self.I = I
@@ -57,7 +57,8 @@ class Coil:
 
         """
         _r = xyz_samples - xyz_center[None,:]
-        return 1e-7 * self.I * np.cross(uvw,_r)/np.linalg.norm(_r,axis=1)[:,None]**3 #mu_0/4pi = 1e-7 H/m
+        Bvecs = np.cross(uvw,_r)/np.linalg.norm(_r,axis=1)[:,None]**3
+        return 1e-7 * self.I * Bvecs #mu_0/4pi = 1e-7 H/m
     def plot(self):
         """
         Displays a 3D plot of the coil

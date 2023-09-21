@@ -99,22 +99,6 @@ class TFCoil(Coil):
         self.pts = np.vstack((X,Y,Z)).T
         self.I = I
 
-'''
-thetas = np.linspace(0,2*np.pi,100)
-X = 1*np.cos(thetas)
-Y = 1*np.sin(thetas)
-Z = 0*X
-XYZ = np.vstack((X,Y,Z)).T
-
-a = Coil(XYZ,1)
-field = a.B(np.array([[0,0,0],[0,1,2]]))
-print(field)
-'''
-
-a = PFCoil(1,0,1)
-field = a.B(np.array([[0,0,0],[0,1,2]]))
-print(field)
-
 class Tokamak:
     def __init__(self,R,a,coils=[]):
         """
@@ -155,11 +139,11 @@ class Tokamak:
         I : np.ndarray of shape (N)
             Vector of currents I for N coils
         """
-        raise NotImplementedError
         #Still under construction
-        #N = len(R)
-        #for i in range(N):
-            #self.coils.append(PFCoil(R[i],Z[i],I[i]))
+        N = len(R)
+        for i in range(N):
+            self.coils.append(PFCoil(R[i],Z[i],I[i]))
+        
 
     def make_TFset(self,phi,I):
         """
@@ -172,8 +156,28 @@ class Tokamak:
         I : np.ndarray of shape (N)
             Vector of currents I for N coils
         """
-        raise NotImplementedError
         #Still under construction
-        #N = len(phi)
-        #for i in range(N):
-            #self.coils.append(TFCoil(phi[i],I[i]))
+        N = len(phi)
+        for i in range(N):
+            self.coils.append(TFCoil(self.R,self.a,phi[i],I[i]))
+
+'''
+thetas = np.linspace(0,2*np.pi,100)
+X = 1*np.cos(thetas)
+Y = 1*np.sin(thetas)
+Z = 0*X
+XYZ = np.vstack((X,Y,Z)).T
+
+a = Coil(XYZ,1)
+field = a.B(np.array([[0,0,0],[0,1,2]]))
+print(field)
+'''
+
+a = PFCoil(1,0,1)
+field = a.B(np.array([[0,0,0],[0,1,2]]))
+print(field)
+
+#CMod = Tokamak(4,1)
+
+#coils = CMod.make_PFset(4,1,1)
+#coils = CMod.make_PFset(4,-1,1)

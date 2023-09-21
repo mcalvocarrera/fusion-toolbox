@@ -114,4 +114,3 @@ print(field)
 a = PFCoil(1,0,1)
 field = a.B(np.array([[0,0,0],[0,1,2]]))
 print(field)
-

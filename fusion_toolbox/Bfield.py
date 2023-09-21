@@ -81,7 +81,25 @@ class Coil:
 
         plt.show()
 
-"""
+class PFCoil(Coil):
+    def __init__(self,R,Z0,I,npts=100):
+        thetas = np.linspace(0,2*np.pi,npts)
+        X = R*np.cos(thetas)
+        Y = R*np.sin(thetas)
+        Z = Z0*np.ones(npts)
+        self.pts = np.vstack((X,Y,Z)).T
+        self.I = I
+
+class TFCoil(Coil):
+    def __init__(self,R,r,phi,I,npts=100):
+        thetas = np.linspace(0,2*np.pi,npts)
+        X = np.cos(phi)*(R+r*np.cos(thetas))
+        Y = np.sin(phi)*(R+r*np.cos(thetas))
+        Z = r*np.sin(thetas)
+        self.pts = np.vstack((X,Y,Z)).T
+        self.I = I
+
+'''
 thetas = np.linspace(0,2*np.pi,100)
 X = 1*np.cos(thetas)
 Y = 1*np.sin(thetas)
@@ -91,4 +109,9 @@ XYZ = np.vstack((X,Y,Z)).T
 a = Coil(XYZ,1)
 field = a.B(np.array([[0,0,0],[0,1,2]]))
 print(field)
-"""
+'''
+
+a = PFCoil(1,0,1)
+field = a.B(np.array([[0,0,0],[0,1,2]]))
+print(field)
+

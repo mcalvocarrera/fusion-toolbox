@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Coil:
-    def __init__(self,pts,I,closed=True):
+    def __init__(self,pts,I):
         """
         Coil Class.
 
@@ -14,7 +14,7 @@ class Coil:
         I : float
             Coil current, in Amps
         """
-        if not np.allclose(pts[0],pts[-1]): #Given loop is not properly closed, repeat first pt
+        if not np.allclose(pts[0],pts[-1]): #If loop is not properly closed, connect first/last pts
             pts = np.append(pts,pts[0][None,:],axis=0)
         self.pts = pts
         self.I = I
@@ -40,7 +40,7 @@ class Coil:
 
         return B_out
 
-    def BGreen(self, xyz_samples, xyz_center, uvw):
+    def BGreen(self, xyz_samples, xyz_center, dl):
         """Evaluates the B field at all sample locations due to a wire segment. Uses the formula:
         dB = mu_0/4pi * I * dl x (r-r_0)/|r-r_0|^3
 
@@ -52,12 +52,13 @@ class Coil:
         xyz_center : np.ndarray of shape (3)
             Location of wire segment
 
-        uvw : np.ndarray of shape (3)
+        dl : np.ndarray of shape (3)
             Vector for wire segment. Should have magnitude equal to length of wire segment.
 
         """
         _r = xyz_samples - xyz_center[None,:]
-        return 1e-7 * self.I * np.cross(uvw,_r)/np.linalg.norm(_r,axis=1)[:,None]**3 #mu_0/4pi = 1e-7 H/m
+        Bvecs = np.cross(dl,_r)/np.linalg.norm(_r,axis=1)[:,None]**3
+        return 1e-7 * self.I * Bvecs #mu_0/4pi = 1e-7 H/m
     def plot(self):
         """
         Displays a 3D plot of the coil
@@ -79,3 +80,15 @@ class Coil:
         ax.set_box_aspect(np.ptp(limits, axis = 1))
 
         plt.show()
+
+"""
+thetas = np.linspace(0,2*np.pi,100)
+X = 1*np.cos(thetas)
+Y = 1*np.sin(thetas)
+Z = 0*X
+XYZ = np.vstack((X,Y,Z)).T
+
+a = Coil(XYZ,1)
+field = a.B(np.array([[0,0,0],[0,1,2]]))
+print(field)
+"""

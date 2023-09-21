@@ -80,3 +80,15 @@ class Coil:
         ax.set_box_aspect(np.ptp(limits, axis = 1))
 
         plt.show()
+
+"""
+thetas = np.linspace(0,2*np.pi,100)
+X = 1*np.cos(thetas)
+Y = 1*np.sin(thetas)
+Z = 0*X
+XYZ = np.vstack((X,Y,Z)).T
+
+a = Coil(XYZ,1)
+field = a.B(np.array([[0,0,0],[0,1,2]]))
+print(field)
+"""

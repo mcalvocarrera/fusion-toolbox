@@ -114,3 +114,66 @@ print(field)
 a = PFCoil(1,0,1)
 field = a.B(np.array([[0,0,0],[0,1,2]]))
 print(field)
+
+class Tokamak:
+    def __init__(self,R,a,coils=[]):
+        """
+        Tokamak class.
+
+        Parameters
+        ----------
+        R : float
+            Major radius of tokamak
+        a : float
+            Minor radius of tokamak
+        coils : list of Coil objects
+            
+        """
+        self.coils = []
+        self.R = R
+        self.a = a
+
+    def get_B_from_coils(self,pts):
+        """
+        Returns the total magnetic field due to all coils in the tokamak object.
+        """
+        tok_B = np.zeros_like(pts)
+        for coil in self.coils:
+            tok_B += coil.B(pts)
+        return tok_B
+    
+    def make_PFset(self,R,Z,I):
+        """
+        Adds in a set of PF coils given a list of their R/Z coordinates and currents.
+        
+        Parameters
+        ----------
+        R : np.ndarray of shape (N)
+            Vector of R positions for N coils
+        Z : np.ndarray of shape (N)
+            Vector of Z positions for N coils
+        I : np.ndarray of shape (N)
+            Vector of currents I for N coils
+        """
+        raise NotImplementedError
+        #Still under construction
+        #N = len(R)
+        #for i in range(N):
+            #self.coils.append(PFCoil(R[i],Z[i],I[i]))
+
+    def make_TFset(self,phi,I):
+        """
+        Adds in a set of TF coils given a list of their toroidal angle phi and currents.
+        
+        Parameters
+        ----------
+        phi : np.ndarray of shape (N)
+            Vector of toroidal angles for N coils
+        I : np.ndarray of shape (N)
+            Vector of currents I for N coils
+        """
+        raise NotImplementedError
+        #Still under construction
+        #N = len(phi)
+        #for i in range(N):
+            #self.coils.append(TFCoil(phi[i],I[i]))

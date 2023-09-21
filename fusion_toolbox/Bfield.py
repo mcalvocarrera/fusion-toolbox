@@ -40,7 +40,7 @@ class Coil:
 
         return B_out
 
-    def BGreen(self, xyz_samples, xyz_center, uvw):
+    def BGreen(self, xyz_samples, xyz_center, dl):
         """Evaluates the B field at all sample locations due to a wire segment. Uses the formula:
         dB = mu_0/4pi * I * dl x (r-r_0)/|r-r_0|^3
 
@@ -52,12 +52,12 @@ class Coil:
         xyz_center : np.ndarray of shape (3)
             Location of wire segment
 
-        uvw : np.ndarray of shape (3)
+        dl : np.ndarray of shape (3)
             Vector for wire segment. Should have magnitude equal to length of wire segment.
 
         """
         _r = xyz_samples - xyz_center[None,:]
-        Bvecs = np.cross(uvw,_r)/np.linalg.norm(_r,axis=1)[:,None]**3
+        Bvecs = np.cross(dl,_r)/np.linalg.norm(_r,axis=1)[:,None]**3
         return 1e-7 * self.I * Bvecs #mu_0/4pi = 1e-7 H/m
     def plot(self):
         """
